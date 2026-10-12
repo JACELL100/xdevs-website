@@ -1,0 +1,203 @@
+< !DOCTYPE html >
+
+    <html lang="en">
+        <head>
+            <meta charset="utf-8" />
+            <meta content="width=device-width,initial-scale=1.0" name="viewport" />
+            <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+            <style>
+                * {margin: 0; padding: 0; box-sizing: border-box; }
+                html, body {
+                    width: 100%;
+                height: 100%;
+                overflow: hidden;
+                background: #000;
+    }
+            </style>
+        </head>
+        <body>
+            <!-- STITCH_THREEJS_START:ANIMATION_4 class="fixed inset-0 w-full h-full bg-transparent" -->
+            <div class="fixed inset-0 w-full h-full bg-transparent" style="display:block;">
+                <script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+                <div id="threejs-container-ANIMATION_4" style="width:100%;height:100%"></div>
+                <script>
+                    (function() {
+  const container = document.getElementById('threejs-container-ANIMATION_4');
+                    const devicePixelRatio = window.devicePixelRatio || 1;
+                    // Three.js interactive 3D Chrome Emblem for THE xDEVS
+                    const width = container.clientWidth || window.innerWidth;
+                    const height = container.clientHeight || window.innerHeight;
+
+                    const scene = new THREE.Scene();
+                    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+                    camera.position.set(0, 0, 7.5);
+
+                    const renderer = new THREE.WebGLRenderer({alpha: true, antialias: true, powerPreference: "high-performance" });
+                    renderer.setSize(width, height);
+                    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+                    renderer.toneMappingExposure = 1.25;
+                    container.appendChild(renderer.domElement);
+
+                    // Lighting setup for high-contrast brushed metallic chrome reflections
+                    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+                    scene.add(ambientLight);
+
+                    const keyLight = new THREE.DirectionalLight(0xffffff, 2.5);
+                    keyLight.position.set(5, 8, 6);
+                    scene.add(keyLight);
+
+                    const rimLight = new THREE.DirectionalLight(0xdde5ed, 3.2);
+                    rimLight.position.set(-6, -4, -4);
+                    scene.add(rimLight);
+
+                    const topSpecular = new THREE.PointLight(0xffffff, 2.0, 20);
+                    topSpecular.position.set(0, 6, 2);
+                    scene.add(topSpecular);
+
+                    // Emblem Group
+                    const emblemGroup = new THREE.Group();
+                    scene.add(emblemGroup);
+
+                    // Shiny Chrome / Brushed Metallic Material with specular highlight
+                    const chromeMaterial = new THREE.MeshPhongMaterial({
+                        color: 0xcccccc,
+                    specular: 0xffffff,
+                    shininess: 120,
+                    flatShading: false
+});
+
+                    const darkChromeMaterial = new THREE.MeshPhongMaterial({
+                        color: 0x888899,
+                    specular: 0xffffff,
+                    shininess: 90
+});
+
+                    const wireframeMaterial = new THREE.MeshBasicMaterial({
+                        color: 0x9999aa,
+                    wireframe: true,
+                    transparent: true,
+                    opacity: 0.25
+});
+
+                    // Create 3D Chevrons & Layered Beveled Prisms that construct the iconic 'X'
+                    const armGeo1 = new THREE.BoxGeometry(0.7, 4.2, 0.55);
+                    const armGeo2 = new THREE.BoxGeometry(0.7, 4.2, 0.55);
+
+                    // Diagonal 1
+                    const armMesh1 = new THREE.Mesh(armGeo1, chromeMaterial);
+                    armMesh1.rotation.z = Math.PI / 4;
+                    emblemGroup.add(armMesh1);
+
+                    // Inner decorative beveled layer
+                    const innerArm1 = new THREE.Mesh(new THREE.BoxGeometry(0.4, 3.6, 0.65), darkChromeMaterial);
+                    innerArm1.rotation.z = Math.PI / 4;
+                    emblemGroup.add(innerArm1);
+
+                    // Diagonal 2
+                    const armMesh2 = new THREE.Mesh(armGeo2, chromeMaterial);
+                    armMesh2.rotation.z = -Math.PI / 4;
+                    emblemGroup.add(armMesh2);
+
+                    const innerArm2 = new THREE.Mesh(new THREE.BoxGeometry(0.4, 3.6, 0.65), darkChromeMaterial);
+                    innerArm2.rotation.z = -Math.PI / 4;
+                    emblemGroup.add(innerArm2);
+
+                    // Surrounding floating floating geometric elements (rings, glass cubes, octas)
+                    const ringGeo = new THREE.TorusGeometry(3.2, 0.02, 16, 100);
+                    const ringMesh = new THREE.Mesh(ringGeo, wireframeMaterial);
+                    ringMesh.rotation.x = Math.PI / 3;
+                    scene.add(ringMesh);
+
+                    const ringGeo2 = new THREE.TorusGeometry(2.6, 0.015, 16, 80);
+                    const ringMesh2 = new THREE.Mesh(ringGeo2, wireframeMaterial);
+                    ringMesh2.rotation.y = Math.PI / 3;
+                    scene.add(ringMesh2);
+
+                    // Floating particles & mini polyhedra
+                    const floatingObjects = [];
+                    const cubeGeo = new THREE.BoxGeometry(0.22, 0.22, 0.22);
+                    const octaGeo = new THREE.OctahedronGeometry(0.2, 0);
+
+                    for (let i = 0; i < 18; i++) {
+  const mesh = new THREE.Mesh(i % 2 === 0 ? cubeGeo : octaGeo, chromeMaterial);
+                    const radius = 2.4 + Math.random() * 2.5;
+                    const theta = Math.random() * Math.PI * 2;
+                    const phi = (Math.random() - 0.5) * Math.PI;
+                    mesh.position.set(
+                    radius * Math.cos(theta) * Math.cos(phi),
+                    radius * Math.sin(phi),
+                    radius * Math.sin(theta) * Math.cos(phi)
+                    );
+                    mesh.userData = {
+                        rotSpeedX: (Math.random() - 0.5) * 0.02,
+                    rotSpeedY: (Math.random() - 0.5) * 0.02,
+                    floatSpeed: 0.5 + Math.random() * 1.5,
+                    offset: Math.random() * Math.PI * 2,
+                    initialY: mesh.position.y
+  };
+                    scene.add(mesh);
+                    floatingObjects.push(mesh);
+}
+
+                    // Mouse interaction / parallax
+                    let mouseX = 0;
+                    let mouseY = 0;
+                    let targetX = 0;
+                    let targetY = 0;
+
+                    function onMouseMove(event) {
+  const rect = container.getBoundingClientRect();
+                    const x = event.clientX - rect.left;
+                    const y = event.clientY - rect.top;
+                    mouseX = (x / rect.width) * 2 - 1;
+                    mouseY = -(y / rect.height) * 2 + 1;
+}
+                    window.addEventListener('mousemove', onMouseMove);
+
+                    // Responsive resize
+                    function onResize() {
+  const w = container.clientWidth || window.innerWidth;
+                    const h = container.clientHeight || window.innerHeight;
+                    camera.aspect = w / h;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(w, h);
+}
+                    window.addEventListener('resize', onResize);
+
+                    // Animation loop
+                    let clock = new THREE.Clock();
+
+                    function animate() {
+                        requestAnimationFrame(animate);
+                    const elapsedTime = clock.getElapsedTime();
+
+                    // Smooth mouse damping
+                    targetX += (mouseX - targetX) * 0.05;
+                    targetY += (mouseY - targetY) * 0.05;
+
+                    // Base emblem rotation & mouse tilt
+                    emblemGroup.rotation.y = elapsedTime * 0.4 + targetX * 0.8;
+                    emblemGroup.rotation.x = Math.sin(elapsedTime * 0.3) * 0.1 - targetY * 0.5;
+                    emblemGroup.position.y = Math.sin(elapsedTime * 1.2) * 0.15;
+
+                    ringMesh.rotation.z = elapsedTime * 0.1;
+                    ringMesh2.rotation.x = elapsedTime * 0.12;
+
+  // Orbit floating objects
+  floatingObjects.forEach((obj) => {
+                        obj.rotation.x += obj.userData.rotSpeedX;
+                    obj.rotation.y += obj.userData.rotSpeedY;
+                    obj.position.y = obj.userData.initialY + Math.sin(elapsedTime * obj.userData.floatSpeed + obj.userData.offset) * 0.2;
+  });
+
+                    renderer.render(scene, camera);
+}
+                    animate();
+
+})();
+                </script>
+            </div>
+            <!-- STITCH_THREEJS_END:ANIMATION_4 -->
+        </body>
+    </html>
