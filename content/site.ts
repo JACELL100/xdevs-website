@@ -7,7 +7,8 @@ export const site = {
   name: "THE xDEVS",
   shortName: "xDEVS",
   domain: "xdevs.in",
-  url: "https://xdevs.in",
+  /** Canonical URL. Override with NEXT_PUBLIC_SITE_URL (e.g. for a staging domain). */
+  url: (process.env.NEXT_PUBLIC_SITE_URL || "https://xdevs.in").replace(/\/$/, ""),
   industry: "IT System Custom Software Development",
   tagline: "We build what's next.",
   heroSub:
