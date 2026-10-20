@@ -26,7 +26,7 @@ Requires Node.js 20.9 or newer.
 
 1. Push this repo to GitHub, then in Vercel choose **Add New → Project** and import it. The framework preset is detected as **Next.js**, so no build settings need changing.
 2. Under **Settings → Environment Variables**, add the variables below for **Production** (and **Preview** if you want the form to work on previews).
-3. Under **Settings → Domains**, add `xdevs.in` and `www.xdevs.in`. The app also redirects `www` to the apex domain in `next.config.ts`.
+3. Under **Settings → Domains**, add `xdevs.in` and `www.xdevs.in`, and pick which one is primary (Vercel redirects the other to it). Don't add a www/apex redirect in `next.config.ts`: it will loop against Vercel's own redirect. Set `NEXT_PUBLIC_SITE_URL` to the primary domain (e.g. `https://www.xdevs.in`) so canonical URLs, the sitemap and JSON-LD match.
 4. Deploy. Every push to the default branch redeploys production, and pull requests get preview URLs.
 
 ### Environment variables

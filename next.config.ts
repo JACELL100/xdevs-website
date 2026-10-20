@@ -30,17 +30,6 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  async redirects() {
-    return [
-      // www → apex. Also add both domains in Vercel → Project → Domains.
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "www.xdevs.in" }],
-        destination: "https://xdevs.in/:path*",
-        permanent: true,
-      },
-    ];
-  },
 };
 
 export default nextConfig;
